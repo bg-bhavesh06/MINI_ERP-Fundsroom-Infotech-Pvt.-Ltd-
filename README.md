@@ -8,30 +8,32 @@
 
 1. [Project Overview](#1-project-overview)
 2. [Business Context](#2-business-context)
-3. [Key Features](#3-key-features)
-4. [Tech Stack](#4-tech-stack)
-5. [System Architecture](#5-system-architecture)
-6. [Authentication & Security](#6-authentication--security)
-7. [Role-Based Access Control (RBAC)](#7-role-based-access-control-rbac)
-8. [Customer CRM Module](#8-customer-crm-module)
-9. [Product & Inventory Management](#9-product--inventory-management)
-10. [Stock Movements Audit Log](#10-stock-movements-audit-log)
-11. [Sales Challan Lifecycle & Business Logic](#11-sales-challan-lifecycle--business-logic)
-12. [Concurrency Control & Row-Level Locking](#12-concurrency-control--row-level-locking)
-13. [Database Schema & Integrity](#13-database-schema--integrity)
-14. [REST API Documentation](#14-rest-api-documentation)
-15. [Environment Variables](#15-environment-variables)
-16. [PostgreSQL Cloud Setup](#16-postgresql-cloud-setup)
-17. [Local Installation & Setup](#17-local-installation--setup)
-18. [Building for Production](#18-building-for-production)
-19. [Automated Testing Suite](#19-automated-testing-suite)
-20. [Postman Collection](#20-postman-collection)
-21. [PDF Delivery Challan / Invoice Export](#21-pdf-delivery-challan--invoice-export)
-22. [Deployment Guide](#22-deployment-guide)
-23. [Assumptions](#23-assumptions)
-24. [Known Limitations](#24-known-limitations)
-25. [Future Roadmap](#25-future-roadmap)
-26. [Demo & Test Credentials](#26-demo--test-credentials)
+3. [User Roles](#3-user-roles)
+4. [Key Features](#4-key-features)
+5. [Tech Stack](#5-tech-stack)
+6. [System Architecture](#6-system-architecture)
+7. [Authentication & Security](#7-authentication--security)
+8. [Role-Based Access Control (RBAC)](#8-role-based-access-control-rbac)
+9. [Customer CRM Module](#9-customer-crm-module)
+10. [Product & Inventory Management](#10-product--inventory-management)
+11. [Stock Movements Audit Log](#11-stock-movements-audit-log)
+12. [Sales Challan Lifecycle & Business Logic](#12-sales-challan-lifecycle--business-logic)
+13. [Concurrency Control & Row-Level Locking](#13-concurrency-control--row-level-locking)
+14. [Database Schema & Integrity](#14-database-schema--integrity)
+15. [REST API Documentation](#15-rest-api-documentation)
+16. [Environment Variables](#16-environment-variables)
+17. [PostgreSQL Cloud Setup](#17-postgresql-cloud-setup)
+18. [Local Installation & Setup](#18-local-installation--setup)
+19. [Building for Production](#19-building-for-production)
+20. [Automated Testing Suite](#20-automated-testing-suite)
+21. [Postman Collection](#21-postman-collection)
+22. [PDF Delivery Challan / Invoice Export](#22-pdf-delivery-challan--invoice-export)
+23. [Deployment Guide](#23-deployment-guide)
+24. [Assumptions](#24-assumptions)
+25. [Known Limitations](#25-known-limitations)
+26. [Future Roadmap](#26-future-roadmap)
+27. [Demo & Test Credentials](#27-demo--test-credentials)
+28. [Project Links](#28-project-links)
 
 ---
 
@@ -51,7 +53,20 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 3. Key Features
+## 3. User Roles
+
+| Role | Main Responsibility |
+|---|---|
+| **Admin** | Overall system access and management. |
+| **Sales** | Customers, products, and sales challan related work. |
+| **Warehouse** | Products, stock adjustments, and stock movement related work. |
+| **Accounts** | Business and sales information needed for accounting work. |
+
+> Role-based access keeps the interface simple and helps prevent users from performing actions outside their responsibility.
+
+---
+
+## 4. Key Features
 
 - **JWT Authentication & RBAC**: 4 distinct operational roles with backend enforcement and UI action gating.
 - **Customer CRM**: Complete customer lifecycle management (Lead, Active, Inactive), search, contact filters, and timestamped follow-up logs.
@@ -64,7 +79,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 4. Tech Stack
+## 5. Tech Stack
 
 ### Backend
 - **Runtime**: Node.js (v20+)
@@ -85,7 +100,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 5. System Architecture
+## 6. System Architecture
 
 ```
                                   ┌───────────────────────────────┐
@@ -108,7 +123,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 6. Authentication & Security
+## 7. Authentication & Security
 
 - **Password Storage**: Passwords hashed with `bcryptjs` (10 salt rounds).
 - **JWT Authorization**: Stateless JWT bearer tokens signed with `JWT_SECRET` and configurable expiry (`8h`).
@@ -118,7 +133,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 7. Role-Based Access Control (RBAC)
+## 8. Role-Based Access Control (RBAC)
 
 | Role | Customer CRM | Product Catalog | Stock Adjustments | Sales Challans | Dashboard Summary |
 |---|:---:|:---:|:---:|:---:|:---:|
@@ -129,7 +144,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 8. Customer CRM Module
+## 9. Customer CRM Module
 
 ### Supported Fields
 - `name` (Required string)
@@ -150,7 +165,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 9. Product & Inventory Management
+## 10. Product & Inventory Management
 
 ### Supported Fields
 - `name` (Required product title)
@@ -166,7 +181,7 @@ Wholesale and distribution companies manage high-volume customer accounts, varia
 
 ---
 
-## 10. Stock Movements Audit Log
+## 11. Stock Movements Audit Log
 
 Every quantity alteration automatically logs an immutable audit entry:
 - **Product ID & Snapshot Details**: Product name & SKU
@@ -178,7 +193,7 @@ Every quantity alteration automatically logs an immutable audit entry:
 
 ---
 
-## 11. Sales Challan Lifecycle & Business Logic
+## 12. Sales Challan Lifecycle & Business Logic
 
 ```
    [ Create Draft ] ──(No stock change)──> [ Draft Challan ]
@@ -202,7 +217,7 @@ Every quantity alteration automatically logs an immutable audit entry:
 
 ---
 
-## 12. Concurrency Control & Row-Level Locking
+## 13. Concurrency Control & Row-Level Locking
 
 In high-concurrency environments, naive `SELECT stock -> UPDATE stock` patterns cause race conditions. Mini ERP implements **PostgreSQL row-level locking**:
 
@@ -227,9 +242,9 @@ COMMIT;
 
 ---
 
-## 13. Database Schema & Integrity
+## 14. Database Schema & Integrity
 
-PostgreSQL relational schema initialized automatically in [src/db.ts](file:///c:/Users/bgbha/OneDrive/Desktop/Cash-Study/MINI_ERP/MINI_ERP/backend/src/db.ts):
+PostgreSQL relational schema initialized automatically in `backend/src/db.ts`:
 
 - `users` (`id`, `name`, `email` UNIQUE, `password`, `role`)
 - `customers` (`id`, `name`, `mobile`, `email`, `business_name`, `gst_number`, `customer_type`, `address`, `status`, `followup_date`, `notes`, `created_at`)
@@ -242,7 +257,7 @@ PostgreSQL relational schema initialized automatically in [src/db.ts](file:///c:
 
 ---
 
-## 14. REST API Documentation
+## 15. REST API Documentation
 
 ### Authentication
 - `POST /api/auth/login` — Authenticate and receive JWT token.
@@ -275,7 +290,7 @@ PostgreSQL relational schema initialized automatically in [src/db.ts](file:///c:
 
 ---
 
-## 15. Environment Variables
+## 16. Environment Variables
 
 ### Backend (`backend/.env`)
 ```env
@@ -292,7 +307,7 @@ VITE_API_URL=http://localhost:5000/api
 
 ---
 
-## 16. PostgreSQL Cloud Setup
+## 17. PostgreSQL Cloud Setup
 
 The project is connected to a free-tier **Neon Serverless PostgreSQL** database hosted on AWS US East (Ohio).
 
@@ -303,7 +318,7 @@ The project is connected to a free-tier **Neon Serverless PostgreSQL** database 
 
 ---
 
-## 17. Local Installation & Setup
+## 18. Local Installation & Setup
 
 ### Prerequisites
 - Node.js (v20 or higher)
@@ -328,7 +343,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 18. Building for Production
+## 19. Building for Production
 
 ```bash
 # Build Backend (TypeScript -> JavaScript in backend/dist)
@@ -345,7 +360,7 @@ npm run build
 
 ---
 
-## 19. Automated Testing Suite
+## 20. Automated Testing Suite
 
 The backend includes a comprehensive 26-test automated suite verifying all core pillars:
 
@@ -363,16 +378,16 @@ npm test
 
 ---
 
-## 20. Postman Collection
+## 21. Postman Collection
 
-Import [postman/Mini_ERP_CRM.postman_collection.json](file:///c:/Users/bgbha/OneDrive/Desktop/Cash-Study/MINI_ERP/MINI_ERP/postman/Mini_ERP_CRM.postman_collection.json) into Postman:
+Import `postman/Mini_ERP_CRM.postman_collection.json` into Postman:
 - Includes pre-configured environment variables (`base_url`, `token`).
 - Test scripts automatically capture and inject the JWT `token` upon login.
 - Includes positive requests and negative validation/error test cases.
 
 ---
 
-## 21. PDF Delivery Challan / Invoice Export
+## 22. PDF Delivery Challan / Invoice Export
 
 Each Challan Detail page includes a **📄 Download PDF** button:
 - Formats a standard A4 Delivery Challan & Invoice document.
@@ -382,7 +397,7 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 
 ---
 
-## 22. Deployment Guide
+## 23. Deployment Guide
 
 ### Frontend Deployment (Vercel / Netlify)
 1. Push repository to GitHub.
@@ -401,7 +416,7 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 
 ---
 
-## 23. Assumptions
+## 24. Assumptions
 
 - Multi-currency: All prices and monetary amounts are in INR (₹).
 - Single-location per product: Each product currently tracks one primary warehouse location string.
@@ -409,14 +424,14 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 
 ---
 
-## 24. Known Limitations
+## 25. Known Limitations
 
 - Multi-warehouse stock split: Products track total stock per location string rather than multi-warehouse bin splits.
 - Email dispatch: Invoices are downloaded directly as PDF files; direct SMTP email dispatch can be integrated with SendGrid/Nodemailer.
 
 ---
 
-## 25. Future Roadmap
+## 26. Future Roadmap
 
 - Batch and Serial Number tracking for perishable or electronics distribution.
 - Barcode / QR scanner integration on mobile devices for warehouse stock-in.
@@ -425,7 +440,7 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 
 ---
 
-## 26. Demo & Test Credentials
+## 27. Demo & Test Credentials
 
 | Role | Email | Password | Primary Capabilities |
 |---|---|---|---|
@@ -435,3 +450,15 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 | **Accounts** | `accounts@erp.com` | `accounts123` | Read-only view & financial audit across portal |
 
 *Quick-fill credential buttons are also available on the Login screen for instant one-click testing.*
+
+---
+
+## 28. Project Links
+
+| Item | Link |
+|---|---|
+| GitHub Repository | ADD LINK |
+| Live Frontend | ADD LINK |
+| Live Backend API | ADD LINK |
+| Postman / API Documentation | ADD LINK |
+| Screen Recording | ADD LINK |
