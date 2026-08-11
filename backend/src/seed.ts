@@ -27,13 +27,24 @@ async function runSeed() {
   }
   console.log("✓ Seeded 4 clean user roles");
 
-  // 3. Seed 5 Clean Realistic Products
+  // 3. Seed 16 Clean Realistic Products for Pagination Demo
   const sampleProducts = [
     ["A4 Copier Paper (Ream)", "PAP-001", "Stationery", 250.00, 100, 20, "Warehouse Bay 1"],
     ["Blue Ballpoint Pen (Box of 20)", "PEN-001", "Stationery", 120.00, 60, 10, "Warehouse Bay 1"],
     ["Whiteboard Marker (Pack of 4)", "MRK-001", "Stationery", 180.00, 45, 10, "Warehouse Bay 2"],
     ["Steel Office Almirah", "FUR-001", "Furniture", 8500.00, 8, 2, "Warehouse Bay 3"],
     ["Heavy Duty Desktop Stapler", "STP-001", "Stationery", 340.00, 30, 5, "Warehouse Bay 2"],
+    ["USB Standard Keyboard", "KB-001", "Electronics", 450.00, 50, 10, "Warehouse Bay 4"],
+    ["Optical USB Mouse", "MOU-001", "Electronics", 250.00, 75, 15, "Warehouse Bay 4"],
+    ["Ergonomic Office Chair", "CHR-001", "Furniture", 4500.00, 12, 3, "Warehouse Bay 3"],
+    ["Thermal Billing Rolls (Pack of 10)", "THM-001", "Stationery", 350.00, 80, 20, "Warehouse Bay 1"],
+    ["Permanent Marker Black (Box)", "PMK-001", "Stationery", 150.00, 40, 10, "Warehouse Bay 2"],
+    ["Transparent Packaging Tape (Roll)", "TAP-001", "Packaging", 65.00, 120, 30, "Warehouse Bay 5"],
+    ["Corrugated Shipping Box (Large)", "BOX-001", "Packaging", 85.00, 200, 50, "Warehouse Bay 5"],
+    ["Bubble Wrap Roll 50m", "BUB-001", "Packaging", 650.00, 25, 5, "Warehouse Bay 5"],
+    ["Sticky Notes Yellow (Pack of 6)", "STK-001", "Stationery", 110.00, 65, 15, "Warehouse Bay 1"],
+    ["Laser Printer Toner Cartridge", "TNR-001", "Electronics", 1850.00, 14, 4, "Warehouse Bay 4"],
+    ["Plastic Document Folder (Pack of 10)", "FLD-001", "Stationery", 95.00, 90, 20, "Warehouse Bay 1"],
   ];
   for (const [name, sku, category, unit_price, stock_qty, min_stock, location] of sampleProducts) {
     await query(
