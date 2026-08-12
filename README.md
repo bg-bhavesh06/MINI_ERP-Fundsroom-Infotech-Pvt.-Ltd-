@@ -1,6 +1,26 @@
 # Mini ERP + CRM Operations Portal
 
-> **Full Stack Developer Case Study** — Production-ready, enterprise-grade Operations Portal built with **Node.js, TypeScript, Express, PostgreSQL (Neon Cloud), and React**.
+> **Full Stack Developer Case Study** — Production-ready Operations Portal built with **Node.js, TypeScript, Express, PostgreSQL (Neon Cloud), and React**.
+
+---
+
+## 📌 Case Study Submission Details
+
+| Resource | Link / Information |
+|---|---|
+| **🌐 Live Frontend Portal** | [https://mini-erp-fundsroom.vercel.app](https://mini-erp-fundsroom.vercel.app) *(or your Vercel deployment URL)* |
+| **⚡ Live Backend API** | [https://mini-erp-backend-6ewa.onrender.com/api](https://mini-erp-backend-6ewa.onrender.com/api) |
+| **🐙 GitHub Repository** | [https://github.com/bg-bhavesh06/MINI_ERP-Fundsroom-Infotech-Pvt.-Ltd-.git](https://github.com/bg-bhavesh06/MINI_ERP-Fundsroom-Infotech-Pvt.-Ltd-.git) |
+| **📮 Postman Collection** | [`postman/Mini_ERP_CRM.postman_collection.json`](postman/Mini_ERP_CRM.postman_collection.json) |
+
+### 🔑 Test Login Credentials (All 4 Roles):
+
+| Role | Email | Password | Permissions & Capabilities |
+|---|---|---|---|
+| **Admin** | `admin@erp.com` | `admin123` | Full access across all modules |
+| **Sales** | `sales@erp.com` | `sales123` | Customers CRM, Create & Confirm Challans |
+| **Warehouse** | `warehouse@erp.com` | `warehouse123` | Products catalog & Stock IN/OUT adjustments |
+| **Accounts** | `accounts@erp.com` | `accounts123` | Read-only view & PDF delivery challan export |
 
 ---
 
