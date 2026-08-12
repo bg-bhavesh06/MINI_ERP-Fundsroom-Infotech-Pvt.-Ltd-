@@ -8,7 +8,7 @@
 
 | Resource | Link / Information |
 |---|---|
-| **🌐 Live Frontend Portal** | [https://mini-erp-fundsroom.vercel.app](https://mini-erp-fundsroom.vercel.app) *(or your Vercel deployment URL)* |
+| **🌐 Live Frontend Portal** | [https://mini-erp-fundsroom.vercel.app](https://mini-erp-fundsroom-infotech-pvt-ltd.vercel.app) *(or your Vercel deployment URL)* |
 | **⚡ Live Backend API** | [https://mini-erp-backend-6ewa.onrender.com/api](https://mini-erp-backend-6ewa.onrender.com/api) |
 | **🐙 GitHub Repository** | [https://github.com/bg-bhavesh06/MINI_ERP-Fundsroom-Infotech-Pvt.-Ltd-.git](https://github.com/bg-bhavesh06/MINI_ERP-Fundsroom-Infotech-Pvt.-Ltd-.git) |
 | **📮 Postman Collection** | [`postman/Mini_ERP_CRM.postman_collection.json`](postman/Mini_ERP_CRM.postman_collection.json) |
