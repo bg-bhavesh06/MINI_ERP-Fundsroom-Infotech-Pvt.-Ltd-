@@ -12,9 +12,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Root & Health Check Endpoints (Supports GET, HEAD, OPTIONS for Uptime Monitors)
-app.all(["/", "/api/health"], (_req, res) => {
-  res.status(200).json({ success: true, message: "Mini ERP + CRM API is running" });
+// Root, /api, & Health Check Endpoints (Friendly JSON for recruiters & monitors)
+app.all(["/", "/api", "/api/health"], (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Mini ERP + CRM API is running",
+    version: "1.0.0",
+    docs: "https://github.com/bg-bhavesh06/MINI_ERP-Fundsroom-Infotech-Pvt.-Ltd-#readme",
+  });
 });
 
 // Mount Routes
