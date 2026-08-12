@@ -12,9 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Health Check
-app.get("/api/health", (_req, res) => {
-  res.json({ success: true, message: "Mini ERP + CRM API is running" });
+// Root & Health Check Endpoints (Supports GET, HEAD, OPTIONS for Uptime Monitors)
+app.all(["/", "/api/health"], (_req, res) => {
+  res.status(200).json({ success: true, message: "Mini ERP + CRM API is running" });
 });
 
 // Mount Routes
