@@ -1,0 +1,412 @@
+{
+  "info": {
+    "name": "Mini ERP + CRM Operations Portal (PostgreSQL API)",
+    "description": "Comprehensive Postman collection for Mini ERP + CRM assignment, featuring role-based authentication, Customer CRM, Inventory & Concurrency-safe Stock Movements, and Sales Challans.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "admin_token", "value": "" },
+    { "key": "sales_token", "value": "" },
+    { "key": "warehouse_token", "value": "" },
+    { "key": "accounts_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('token', json.data.token);",
+                  "    pm.collectionVariables.set('admin_token', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@erp.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Login (Sales)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('sales_token', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sales@erp.com\",\n  \"password\": \"sales123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Login (Warehouse)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('warehouse_token', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"warehouse@erp.com\",\n  \"password\": \"warehouse123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Login (Accounts)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('accounts_token', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"accounts@erp.com\",\n  \"password\": \"accounts123\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Get Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/me"
+          }
+        },
+        {
+          "name": "Invalid Password (401 Error)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@erp.com\",\n  \"password\": \"wrongpass\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Customer CRM",
+      "item": [
+        {
+          "name": "List Customers (Search & Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/customers?search=&status=Active&customer_type=Wholesale&page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get Customer Detail & Follow-ups",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/customers/1"
+          }
+        },
+        {
+          "name": "Add Customer (Admin/Sales)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Apex Global Enterprises\",\n  \"mobile\": \"9825012345\",\n  \"email\": \"orders@apexglobal.in\",\n  \"business_name\": \"Apex Global Ltd\",\n  \"gst_number\": \"24AAACA1234A1Z1\",\n  \"customer_type\": \"Wholesale\",\n  \"address\": \"Surat, Gujarat\",\n  \"status\": \"Active\",\n  \"notes\": \"Key enterprise distributor\"\n}"
+            },
+            "url": "{{base_url}}/customers"
+          }
+        },
+        {
+          "name": "Edit Customer (Admin/Sales)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Active\",\n  \"followup_date\": \"2026-08-20\",\n  \"notes\": \"Follow-up scheduled for contract renewal\"\n}"
+            },
+            "url": "{{base_url}}/customers/1"
+          }
+        },
+        {
+          "name": "Add CRM Follow-up Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Spoke with purchase manager. Order expected next week.\"\n}"
+            },
+            "url": "{{base_url}}/customers/1/followups"
+          }
+        },
+        {
+          "name": "Validation Error - Missing Name (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"customer_type\": \"Retail\"\n}"
+            },
+            "url": "{{base_url}}/customers"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Product & Inventory",
+      "item": [
+        {
+          "name": "List Products (Search & Low Stock Filter)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/products?search=&lowStock=false&page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get Product Detail & Stock History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/products/1"
+          }
+        },
+        {
+          "name": "Add Product (Admin/Warehouse)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Permanent Marker Pens (Set of 12)\",\n  \"sku\": \"MRK-012\",\n  \"category\": \"Stationery\",\n  \"unit_price\": 180.00,\n  \"stock_qty\": 80,\n  \"min_stock\": 15,\n  \"location\": \"Warehouse A, Bay 2\"\n}"
+            },
+            "url": "{{base_url}}/products"
+          }
+        },
+        {
+          "name": "Edit Product (Admin/Warehouse)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"unit_price\": 195.00,\n  \"min_stock\": 20\n}"
+            },
+            "url": "{{base_url}}/products/1"
+          }
+        },
+        {
+          "name": "Adjust Stock - IN (Admin/Warehouse)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qty\": 25,\n  \"type\": \"IN\",\n  \"reason\": \"Supplier purchase batch recvd\"\n}"
+            },
+            "url": "{{base_url}}/products/1/stock"
+          }
+        },
+        {
+          "name": "Stock Movements Audit Log",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/products/movements?page=1&limit=20"
+          }
+        },
+        {
+          "name": "Over-Reduction Rejection (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"qty\": 99999,\n  \"type\": \"OUT\",\n  \"reason\": \"Illegal over-allocation\"\n}"
+            },
+            "url": "{{base_url}}/products/1/stock"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Sales Challans",
+      "item": [
+        {
+          "name": "List Challans (Status Filter & Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/challans?status=Confirmed&page=1&limit=10"
+          }
+        },
+        {
+          "name": "Get Challan Detail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/challans/1"
+          }
+        },
+        {
+          "name": "Create Draft Challan (No Stock Change)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"status\": \"Draft\",\n  \"items\": [\n    { \"product_id\": 1, \"qty\": 5 },\n    { \"product_id\": 2, \"qty\": 2 }\n  ]\n}"
+            },
+            "url": "{{base_url}}/challans"
+          }
+        },
+        {
+          "name": "Create Confirmed Challan (Atomically Reduces Stock)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"status\": \"Confirmed\",\n  \"items\": [\n    { \"product_id\": 1, \"qty\": 2 }\n  ]\n}"
+            },
+            "url": "{{base_url}}/challans"
+          }
+        },
+        {
+          "name": "Confirm Draft Challan",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/challans/1/confirm"
+          }
+        },
+        {
+          "name": "Cancel Challan (Restores Stock)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/challans/1/cancel"
+          }
+        },
+        {
+          "name": "Insufficient Stock Error (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"status\": \"Confirmed\",\n  \"items\": [\n    { \"product_id\": 1, \"qty\": 999999 }\n  ]\n}"
+            },
+            "url": "{{base_url}}/challans"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Dashboard",
+      "item": [
+        {
+          "name": "Get Summary KPI Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/dashboard/summary"
+          }
+        }
+      ]
+    }
+  ]
+}

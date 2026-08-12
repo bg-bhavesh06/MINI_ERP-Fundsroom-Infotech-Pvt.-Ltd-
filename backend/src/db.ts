@@ -13,6 +13,9 @@ if (!connectionString) {
 export const pool = new Pool({
   connectionString,
   ssl: { rejectUnauthorized: false },
+  max: 5,
+  idleTimeoutMillis: 10000,
+  connectionTimeoutMillis: 10000,
 });
 
 export const query = (text: string, params?: any[]) => pool.query(text, params);
