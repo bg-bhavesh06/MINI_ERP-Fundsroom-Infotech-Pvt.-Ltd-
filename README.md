@@ -479,16 +479,4 @@ Each Challan Detail page includes a **📄 Download PDF** button:
 | **Warehouse** | `warehouse@erp.com` | `warehouse123` | Products catalog & Stock IN/OUT Adjustments |
 | **Accounts** | `accounts@erp.com` | `accounts123` | Read-only view & financial audit across portal |
 
-*Quick-fill credential buttons are also available on the Login screen for instant one-click testing.*
 
----
-
-## 28. Project Links
-
-| Item | Link |
-|---|---|
-| GitHub Repository | ADD LINK |
-| Live Frontend | ADD LINK |
-| Live Backend API | ADD LINK |
-| Postman / API Documentation | ADD LINK |
-| Screen Recording | ADD LINK |
